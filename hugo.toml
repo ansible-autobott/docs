@@ -1,0 +1,4 @@
+baseURL = 'https://example.org/'
+languageCode = 'en-us'
+title = 'Ansible Autobott Documentation'
+theme = 'hugo-book'

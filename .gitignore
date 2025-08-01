@@ -1,0 +1,34 @@
+# Build and Release Folders
+bin/
+bin-debug/
+bin-release/
+
+# Other files and folders
+.settings/
+
+# Executables
+*.ipa
+*.apk
+
+# Hugo
+public/
+resources/_gen/
+.hugo_build.lock
+
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+*.iml
+*.swp
+*.swo
+.vscode/
+
+# Log files
+*.log
+
+# Backup files
+*~
