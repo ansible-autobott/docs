@@ -1,0 +1,26 @@
+
+:root {
+    --gray-100: #ffffff;            /* light background */
+    --gray-200: #e2e6ea;            /* light border / UI contrast */
+    --gray-500: #6c757d;            /* muted text / icons */
+
+    --color-link: #1a73e8;          /* modern blue, readable */
+    --color-visited-link: #7e57c2;  /* soft purple for visited */
+
+    --body-background: #f6f6f6;     /* clean white background */
+    --body-font-color: #324759;     /* almost-black, softer on eyes */
+
+    --icon-filter: brightness(0.7) contrast(1.2);  /* softens dark icons */
+
+    --hint-color-info: #339af0;     /* lighter info blue */
+    --hint-color-warning: #ffca3a;  /* vibrant but readable yellow */
+    --hint-color-danger: #ff6b6b;   /* soft red, less harsh than #f66 */
+}
+
+.book-search{
+
+}
+
+.book-search input{
+    /*background-color: var(--gray-100);*/
+}
