@@ -26,7 +26,7 @@ Whether you're running a homelab or managing a lightweight private cloud, AutoBo
 
 ## Get Started
 
-Check out the [Getting Started Guide](docs/docs/getting-started/) to set up your first server or simply try
+Check out the [Getting Started Guide](/docs/docs/getting-started/) to set up your first server or simply try
 it out on a [vagrant VM](/docs/docs/getting-started/vagrant/).
 
 ---
