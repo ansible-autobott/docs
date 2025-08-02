@@ -55,6 +55,12 @@ Every servarr runs as its own user and group, the same applies to samba shared f
 To allow all servarr and samba user access the same file we need to change how file permissions are setup for the 
 share content.
 
+To achieve that multiple services can read/write on the same content we will  configure a common group  and apply 
+the **setgid** bit on the shared directories, in addition we will modify the umask of the services so that the
+created directories preserve the needed permissions.
+ 
+This ensures that all created files and folders inherit the group ownership, allowing consistent read/write permissions.
+
 In this example we will use a group called _smbmedia_ that will have access to all the media files, if you want 
 to split e.g. movies, books, etc. into different groups this is possible.
 The user smbmedia will act as a stub for files created by samba, but for this shared scenario user ownership is not relevant.
@@ -133,7 +139,8 @@ transmission:
 ### Servarr integration
 
 
-Now you need to configure the Servarr apps to have access to the shared files both torrent download and the media collection.
+Now you need to configure the Servarr apps to have access to the shared files both torrent 
+download and the media collection.
 
 For this example we will use Sonarr, but you need to repeat for all the apps you use.
 
@@ -149,6 +156,11 @@ sonarr:
 
 ### Jellyfin integration
 
-To have Jellyfin access the shared media, it also needs the following configuration:
+Same as the previous apps, to have Jellyfin access the shared media, it also needs the following configuration:
 
-
+```yaml
+jellyfin:
+  extra_groups:
+    - smbmedia
+  umask: "0007"
+```
