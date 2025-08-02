@@ -39,15 +39,38 @@ check the official documentation for details.
     * paste username + password
     * Add a category (see auto-cleanup below)
 
-### Auto-Cleanup
+---
+## Auto-Cleanup
 
 Autobott ships with an auto-clean up script that can automatically remove completed torrents after a certain time.
 (this ensures that your torrent has a minimum seed time, as some trackers need)
 
-To isolate the auto-cleanup from regular downloads, it's highly recommend to use the _**Category**_ field in your apps;
-This creates dedicated directories that the cleanup script can address.
+To isolate the auto-cleanup from regular downloads, it's highly recommend to use the _**Category**_ field in your apps,
+this creates dedicated directories that the cleanup mechanism can address.
 
+To configure the cleanup you need to configure all the different cleanup targets as follows:
 
+```yaml
+transmission:
+  autoclean: 
+    # this is for sonarr
+    - name: sonarr
+      target: /path/to/torrent/tv-sonar
+      days: 16
+    # other folders
+    - name: radarr
+      target: /path/to/torrent/radar
+      days: 30
+```
+
+The script will run daily using cron and remove **completed** torrents that are older than the threshold.
+
+{{% hint warning %}}
+Stale torrents that do not complete are not automatically removed, we recommend that you check from time to 
+time the torrent client to manually clean those.
+{{% /hint %}}
+
+---
 ## File permissions across services
 
 Every servarr runs as its own user and group, the same applies to samba shared folder users.
@@ -76,10 +99,11 @@ shares:
   - name: "torrents"
     comment: "Download dir"
     path: "/media/torrent"
-    owner: "smbmedia"  # select a common dummy user,
+    owner: "debian-transmission" 
     group:  "smbmedia"  # all servarr users need to be part of this group
-    mode: "2770" # 2xxx sets the setgid bit to ensure created files and dirs Inherit the group of the parent directory
-
+    # 2xxx sets the setgid bit to ensure created 
+    # files and dirs Inherit the group of the parent directory
+    mode: "2770" 
     # this block ensure that files created through samba are consistent
     force_user: "smbmedia"
     force_group: "smbmedia"
@@ -94,6 +118,14 @@ shares:
       - "@smbmedia"
 ```
 
+{{% hint warning %}}
+If you decide to share the torrent directory directly make sure that in samba you configure the same 
+owner/group and mode as in transmission, otherwise the roles transmission and samba  
+will conflict and assign different permissions on the same.
+folder.
+{{% /hint %}}
+
+
 Create another samba shared dir for your media collection
 
 ```yaml
@@ -101,11 +133,12 @@ shares:
   - name: "media"
     comment: "A shared folder"
     path: "/media/shared_movies"
-
     owner: "smbmedia"  
-    group:  "smbmedia" 
-    mode: "2770" # 2xxx sets the setgid bit, to ensure created files and dirs Inherit the group of the parent directory
-
+    group:  "smbmedia"
+    # 2xxx sets the setgid bit to ensure created 
+    # files and dirs Inherit the group of the parent directory    
+    mode: "2770"
+    # this block ensure that files created through samba are consistent
     force_user: "smbmedia"
     force_group: "smbmedia"
     create_mode: "0660"
@@ -130,9 +163,13 @@ transmission:
     path:  "/media/torrent"
     owner: debian-transmission
     group: smbmedia
-    mode: "2750"
-  # important to set the umask value, this ensures that torrent files are created as with permissions 660
-  # needs to be set in decimal notation: 18=022 (644), 2=002 (664), 7=007 (660)
+    # 2xxx sets the setgid bit to ensure created 
+    # files and dirs Inherit the group of the parent directory  
+    mode: "2770"
+  # important to set the umask value, this ensures that 
+  # torrent files are created as with permissions 660
+  # needs to be set in decimal notation: 
+  # 18=022 (644), 2=002 (664), 7=007 (660)
   umask: 7
 ```
 
@@ -147,10 +184,12 @@ For this example we will use Sonarr, but you need to repeat for all the apps you
 ```yaml
 sonarr:
   user:
-    # tell the sonnar service to start as group smbmedia, this gives it read permissions on the torrent location
+    # tell the sonnar service to start as group smbmedia, 
+    # this gives it read permissions on the torrent location
     group: smbmedia
   service:
-    # tell sonnar to create new folders with permissions 770, aligend with the torrent share
+    # tell sonnar to create new folders with permissions 770,
+    # aligend with the torrent share
     umask: "0007"
 ```
 
