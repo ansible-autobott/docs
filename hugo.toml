@@ -1,4 +1,4 @@
-baseURL = 'https://example.org/'
+baseURL = 'https://ansible-autobott.github.io/docs/'
 languageCode = 'en-us'
 title = 'Ansible Autobott'
 theme = 'hugo-book'

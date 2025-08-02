@@ -38,11 +38,6 @@ borg_checksums:
 
 
 
-
-
-
-
-
 ### Setup a borg remote server
 ```yaml
 
