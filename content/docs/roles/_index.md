@@ -3,6 +3,7 @@ weight: 1
 bookFlatSection: true
 title: "Roles"
 description: "List of roles in Autobott and their scope"
+bookToc: false
 ---
 
 
