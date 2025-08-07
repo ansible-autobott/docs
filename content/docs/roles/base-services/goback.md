@@ -28,46 +28,35 @@ Once goback is installed you can define profiles that will be executed weekly/mo
 goback_profiles:
 
   # very minimal profile config, this will place the backups in the default location
-  - name: demo_php_global
     # set to false to keep the profile but disabled
-    enabled: True
-    # include these dirs
-    dirs:
-      - root: /vhosts/demo_php/home_dir/public_html
-    # include make a mysqldump of these DBs
-    mysql:
-      - dbname:  demo
-    # keep the latest 2 backups
-    keep: 2
+  - enabled: True
     # run monthly backup
     corn_monthly: True
-
-  # extended profile:  this will place the backups on a custom location
-  - name: demo_php
-    enabled: True
-    # set a specific backup location
-    destination: /vhosts/demo_php/backups
-    # set the mode of the destination folder
+    # run weekly backup
+    corn_weekly: True
+    # set the mode of the target directory when creating
     dir_mode: "0700"
-    # change file owner after backup
-    file_owner: andresbott_com
-    file_mode: "0600"
-    # delete backup directory when disabling the role
-    delete_destination: no
-    dirs:
-      - root: /vhosts/demo_php/home_dir/public_html
-    mysql:
-      - dbname: demo
-        user: db_user
-        password: db_password        
-    keep: 1
-    corn_monthly: True
-    corn_weekly: false
+    # content of the goback profile configuration,
+    # check the goback documentation for details: https://github.com/andresbott/goback
+    content:
+      version: 1
+      # IMPORTANT the role needs the name to be present
+      name: "demo_php_global"
+      type: "local"
+      dirs:
+        # the path defines the source to backup / sync
+        - path: "/vhosts/demo_php/home_dir/public_html"
+      dbs:
+        name: demo
+        type: mysql
+      destination:
+        path:   "/vhosts/demo_php/backups"
+        keep: 3
 ```
 
 ## Goback destination in a SFTP Jail 
 
-check out the guides where it is described how to set up Goback in conmbination of sftp jails
+check out the guides where it is described how to set up Goback in combination of sftp jails
 to allow users and admins to download backups over sfpt.
 
 

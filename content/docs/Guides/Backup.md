@@ -27,19 +27,22 @@ the users home:
 
 ```yaml
 goback_profiles:
-  - name: demo
-    enabled: True
-    dirs:
-      - root: /vhosts/demo/home_dir/public_html
-    mysql:
-      - dbname:  demo
-    keep: 2
+  - enabled: True
     corn_weekly: True
-    # this is where we define the target    
-    destination: /vhosts/demo/home_dir/backups
-    file_owner: demo
-    file_mode: "0600"
     dir_mode: "0700"
+    content:
+      version: 1
+      name: demo
+      dirs:
+        - path: /vhosts/demo/home_dir/public_html
+      dbs:
+        - name:  demo
+    # this is where we define the target    
+    destination:
+      path: /vhosts/demo/home_dir/backups
+      keep: 2
+      owner: demo
+      mode: "0600"
 ```
 
 
@@ -89,20 +92,22 @@ permission 755, this is a requirement for the jail to work.
 Now le's configure our profile to put the backups in `/backup/output`
 
 ```yaml
-  - name: mediawiki
-    enabled: yes
-    keep: 2
+  - enabled: True
     corn_weekly: True
-    dirs:
-      - root: /vhosts/mediawiki/home_dir/data
-    mysql:
-      - dbname: "mediawiki"
-    
-    # this is where we define the target
-    destination: /backup/output/mediawiki
-    file_owner: backup
-    file_mode: "0600"
     dir_mode: "0700"
+    content:
+      version: 1
+      name: mediawiki
+      dirs:
+        - path: /vhosts/mediawiki/home_dir/data
+      dbs:
+        - name:  mediawiki
+    # this is where we define the target    
+    destination:
+      path: /backup/output/mediawiki
+      keep: 2
+      owner: backup
+      mode: "0600"
 
 ```
 {{% hint info %}}
@@ -117,9 +122,17 @@ $~ sftp backup@my-host
 
 ### Automatic pull of remote backup files 
 
-{{% hint warning %}}
-This is a placeholder for now, not yet implemented.
-{{% /hint %}}
+With the 0.3.0 release of Goback we can now pull specific backup files that were generated on a remote machine
+into a local machine; the idea is that we have weekly/monthly backups on the remote machine into the sftp jail and 
+on the local host we have another cron that uses goback to connect to the remote, pull new backup files and locally
+expurge older backup files.
+
+we asume you already have setup the backup into the jail, to configure a new profile to pull backups we 
+configure the goback role as:
+
+
+
+
 
 
 ## Borg
