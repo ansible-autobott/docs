@@ -15,10 +15,8 @@ CalDav and CardDav server that stored data as plain files.
 run_role_radicale: true
 ```
 
-### Tags:
-
-`radicale` => run only this role
-
+**Tags**:
+* `radicale` => run only this role
     
 ---
 ## Proxy Configuration

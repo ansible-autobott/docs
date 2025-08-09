@@ -13,9 +13,8 @@ Collaborative wiki
 run_role_docmost: true
 ```
 
-### Tags:
-
-`docmost` => run only this role
+**Tags**:
+* `docmost` => run only this role
 
 
 #### Mandatory configuration:
@@ -73,3 +72,67 @@ Sample vhost configuration.
       proxy_url: "http://127.0.0.1:3030"
 
 ```
+
+--- 
+
+## Backup / Restore
+
+### Backup
+
+docmost can be backed up using goback with a config like this:
+
+```yaml
+  - enabled: True
+    corn_weekly: True
+    dir_mode: "0700"
+    content:
+      version: 1
+      name: docmost
+      type: "local"
+      dirs:
+        # data path for images etc
+        - path: /opt/docmost/data
+      dbs:
+        # docker postgress config
+        - name: docmost
+          user: docmost
+          password: "{{ secrets.services.docmost.db_pass }}"
+          type: dockerPostgres
+          containerName: docmost_postgres
+      # sftp jail
+      destination:
+        path:   "/var/goback_backups/output/docmost"
+        keep: 5
+        owner: backup
+        mode:  "0600"
+
+
+
+
+```
+
+---
+
+### Restore
+
+1. delete any data of docmost and start a new clean instance
+```bash
+docker compose down -v # this deletes the data in the volumes
+docker compise up -d # start a new docmost in the backround
+```
+
+
+2. Copy the data folder from the backup to the location where docker compose will serve the data.
+Important: make sure that the permissions are set correctly 
+    
+3. restore the DB with:
+``` bash
+export PG_PASSWORD="YOUR_POSTGRESQL_PASSWORD"
+export DB_CONTAINER_NAME=docmost_postgres
+
+docker exec -it $DB_CONTAINER_NAME psql -U docmost -d docmost -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+cat <docmost.dump.sql> | docker exec -i $DB_CONTAINER_NAME psql -U docmost -d docmost
+```
+
+> postgres commands based on: https://github.com/docmost/docmost/discussions/192#discussioncomment-13002803
+

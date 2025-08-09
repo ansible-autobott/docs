@@ -14,9 +14,8 @@ The Original WIKI
 run_role_mediawiki: true
 ```
 
-### Tags:
-
-`mediawiki` => run only this role
+**Tags**:
+* `mediawiki` => run only this role
 
 #### Mandatory configuration:
 

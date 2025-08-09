@@ -13,9 +13,8 @@ PHP interface to manage Mysql/MariaDB Databases.
 run_role_mealie: true
 ```
 
-### Tags:
-
-`phpmyadmin` => run only this role
+**Tags**:
+* `phpmyadmin` => run only this role
 
 ## Mandatory configuration:
 

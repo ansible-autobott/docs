@@ -13,8 +13,7 @@ Configurable homepage service, the mst used for self-hosted landing pages
 run_role_homepage: true
 ```
 
-### Tags:
-
+**Tags**:
 * `homepage` => run only this role
 * `homepage-settings` => only apply new homepage settings
 

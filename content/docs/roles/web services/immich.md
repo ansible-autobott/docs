@@ -13,9 +13,8 @@ The personal replacement for google photos
 run_role_immich: true
 ```
 
-### Tags:
-
-`immich` => run only this role
+**Tags**:
+* `immich` => run only this role
 
 #### Mandatory configuration:
 
