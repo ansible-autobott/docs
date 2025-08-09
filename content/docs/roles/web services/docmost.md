@@ -124,6 +124,11 @@ docker compise up -d # start a new docmost in the backround
 
 2. Copy the data folder from the backup to the location where docker compose will serve the data.
 Important: make sure that the permissions are set correctly 
+
+```bash
+chown -R <user>:<group> <path>
+find . -type f -exec chmod 640 {} + -o -type d -exec chmod 750 {} +
+```
     
 3. restore the DB with:
 ``` bash

@@ -99,3 +99,57 @@ see [vhost](Vhosts.md) for more information.
 {{% /hint %}}
 
 
+--- 
+## Backup / Restore
+
+### Backup
+
+mediawiki can be backed up using goback with a config like this:
+
+```yaml
+  - enabled: True
+    corn_weekly: True
+    dir_mode: "0700"
+    content:
+      version: 1
+      name: docmost
+      type: "local"
+      dirs:
+        # data path for images etc
+        - path: /vhosts/my_wiki/home_dir/mediawiki_files
+      dbs:
+        # docker postgress config
+        - name: my_wiki
+          type: mysql
+      # sftp jail
+      destination:
+        path:   "/var/goback_backups/output/mediawiki"
+        keep: 5
+        owner: backup
+        mode:  "0600"
+```
+
+---
+
+### Restore
+
+1. delete any data of mediawiki and start a new clean instance
+
+2. Copy the data folder from the backup to the location where docker compose will serve the data.
+   Important: make sure that the permissions are set correctly
+
+```bash
+chown -R <user>:<group> <path>
+find . -type f -exec chmod 640 {} + -o -type d -exec chmod 750 {} +
+```
+
+if the Target DB name is not the same as the orrigin, you can modify the dump before import
+
+```bash
+sed 's/USE `old_name`;/USE `new_name`;/g' old_name.dump.sql > new_name.dump.sql
+```
+
+3. as root, restore the DB with:
+``` bash
+mysql < db_backup.dump
+```
