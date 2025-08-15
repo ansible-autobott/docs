@@ -61,11 +61,46 @@ This will try to use existing users/credentials to perform the necessary setup o
 
 If the automatic enrollment does not work, you can allways enroll the Host manually:
 
-1. Create an admin user `ans` on the system
-2. put your public ssh key in `.ssh/authorized_keys`
-3. Make sure sudo is installed and add the user to a sudo group so that he can execute `sudo su`
-4. make sure that he is promoted for a password and escalation to root works as expected.
+1. make sure sudo is installed 
+```bash
+apt update && sudo apt install -y sudo 
+```
 
+2. Create an admin user `ans` on the system
+```bash
+#Create the group with GID 900
+sudo groupadd -g 900 ans
+# Create admin user with a specific UID
+sudo useradd -m -s /bin/bash -u 900  -g 900 ans
+```
+3. put your public ssh key in `.ssh/authorized_keys`
+
+```bash
+# prepare folders
+sudo mkdir -p /home/ans/.ssh
+sudo chmod 700 /home/ans/.ssh
+# put the key
+sudo echo "<THE PUBLIC KEY>" | sudo tee /home/ans/.ssh/authorized_keys > /dev/null
+# fix permissions
+sudo chmod 600 /home/ans/.ssh/authorized_keys
+sudo chown -R ans:ans /home/ans/.ssh
+```
+4. Make sure to add the user to the sudo group so that he can execute `sudo su`
+```bash
+sudo usermod -aG sudo ans
+```
+5. Set a password for the user, this needs to match what you define in `ansible_become_pass`
+```bash
+sudo passwd ans
+```
+6. verify everything works
+
+From the host machine
+```bash
+ssh ans@MACHINE # use ssh key, no password promt expected
+sudo su # expected password prompt
+```
+---
 
 ## Running locally
 if you don't want to have the ssh user exposes, you can as well clone the repository to the target machine

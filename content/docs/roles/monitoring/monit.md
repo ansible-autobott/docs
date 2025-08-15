@@ -28,7 +28,11 @@ for the complete set of options, refer to the defaults.yaml file in the role dir
 monit:
   # list of pre-made checks
   checks:
-    system: True        # main system alerts, cpu/disk/memory
+    # main system alerts, cpu/disk/memory
+    system:
+      enabled: True
+      mem_limit: 80%
+      swap_limit: 20%
     ssh: True           # monitor and restart sshd
     mariadb: True       # monitor and restart mariadb service
     caddy:              # monitor and restart caddy service

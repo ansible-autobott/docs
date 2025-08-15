@@ -1,5 +1,5 @@
 ---
 weight: 1
 title: "Guides"
-bookCollapseSection: true
+bookCollapseSection: False
 ---

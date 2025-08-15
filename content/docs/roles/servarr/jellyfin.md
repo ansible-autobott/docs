@@ -52,3 +52,53 @@ Sample vhost configuration.
       proxy_url: "http://127.0.0.1:8096"
 
 ```
+
+
+## Backup / Restore
+
+The full backup/restore details are documented here:
+https://jellyfin.org/docs/general/administration/backup-and-restore/ 
+
+### Backup
+
+The Debian based installation stored data `/var/lib/jellyfin` and config is in `/etc/jellyfin`
+
+
+{{% hint danger %}}
+Jellyfin requests to stop the service to make safe backups, the current approach does not solve this.
+Use at own risk, as an alternative use borgmatic with a shutdown hook.
+{{% /hint %}}
+
+```yaml
+  - enabled: True
+    corn_weekly: True
+    dir_mode: "0700"
+    content:
+      version: 1
+      name: jellyfin
+      type: "local"
+      dirs:
+        # change data dir accordingly, e.g. /opt/sonarr/data/Backups
+        - path: /var/lib/jellyfin
+        - path: /etc/jellyfin
+      # sftp jail
+      destination:
+        path:   "/var/goback_backups/output/jellyfin"
+        keep: 5
+        owner: backup
+        mode:  "0600"
+
+```
+
+---
+
+### Restore
+
+1. make sure you have the same jellyfin version.
+2. Stop the Jellyfin service.
+3. copy the backup data in place.
+4. Start the server again.
+
+
+
+

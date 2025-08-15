@@ -38,5 +38,15 @@ for the complete set of options, refer to the defaults.yaml file in the role dir
 caddy:
   # enable Prometheus metrics
   metrics: true
+  
+  # the git tag used to build caddy, can be a tag or a commit
+  caddy_version: "v2.10.0" 
+  go_version: 1.25.0
+
+  # specify a list of plugins to build with xcaddy
+  # see https://caddyserver.com/docs/build#xcaddy
+  caddy_plugins: 
+    - github.com/caddy-dns/cloudflare
+
 
 ```

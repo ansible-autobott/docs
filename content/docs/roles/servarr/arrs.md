@@ -93,3 +93,48 @@ Once enabled you can point a reverse proxy to: `127.0.0.1:<port>`
 * stash => 9999
 * xbvr => 9997
 
+
+
+## Backup / Restore
+
+### Backup
+
+Arr apps have build-in scheduled backup, we can either manually download those file, or capture them in a goback 
+rule as follows
+
+```yaml
+  - enabled: True
+    corn_weekly: True
+    dir_mode: "0700"
+    content:
+      version: 1
+      name: sonarr
+      type: "local"
+      dirs:
+        # change data dir accordingly, e.g. /opt/sonarr/data/Backups
+        - path: /opt/sonarr/data/Backups
+      # sftp jail
+      destination:
+        path:   "/var/goback_backups/output/servarr"
+        keep: 5
+        owner: backup
+        mode:  "0600"
+
+```
+
+---
+
+### Restore
+
+1. make sure you have a running instance, then navigate to: system > backup
+2. On the top use the "Restore Backup" function to upload and apply a backup
+
+{{% hint info %}}
+After import you might need to run "update all" or "Refresh and scan" on individual entries to update covers etc.
+{{% /hint %}}
+
+{{% hint warning %}}
+If you restored from a different computer, you will need to update the configuration related to indexes, torrent 
+client, root folders, etc.
+{{% /hint %}}
+

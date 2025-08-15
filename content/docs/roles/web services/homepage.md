@@ -23,17 +23,39 @@ run_role_homepage: true
 homepage:
   allowed_host: localhost:8443
 ```
+
+## Configuration
 To configure homepage you need to create the config files: bookmarks.yaml, services.yaml, settings.yaml and widgets.yaml
-in any of the following paths: `<inventory_root>/files/homepage` or  `<inventory_root>/files/homepage/<host_name>`
+in any of the following paths, picked up in order of preference
+1. `<inventory_root>/files/homepage/<host_name>`
+2. `<inventory_root>/files/homepage` 
 
-They will be picked up in order of preference, giving priority to the host.
+In Addition, you can add images and icons on the paths:
+* `<inventory_root>/files/homepage/images` 
+* `<inventory_root>/files/homepage/icons`
 
-For details on configuration check the official documentation: [https://gethomepage.dev/configs/](https://gethomepage.dev/configs/)
+There you can put files that will be copied into the target machine.
 
-You can add additional images and icons on the paths:
-`<inventory_root>/files/homepage/images` and  `<inventory_root>/files/homepage/icons` respectively
+{{% hint info %}}
+For details on homepage configuration check the official documentation: [https://gethomepage.dev/configs/](https://gethomepage.dev/configs/)   
+{{% /hint %}}
 
-   
+### About Secrets
+
+You can reference encrypted secrets in these configuration files as well:
+
+```yaml
+    - Sonarr:
+        ...
+        widget:
+          type: sonarr
+          url: "http://127.0.0.1:8989"
+          key: "{{ secrets.sonarr.api_key }}"
+```
+
+
+
+
 
 ---
 ## Proxy Configuration
