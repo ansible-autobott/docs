@@ -23,7 +23,7 @@ smartd:
   email: root
 ```
 
-### **powermode**
+### powermode
 
 configure the power mode on what smart will scan a disk, possible values:
 * never: smartd will poll (check) the device regardless of its power mode.
@@ -34,12 +34,12 @@ in idle normally disks are still spinning
 
 see https://www.smartmontools.org/wiki/Powermode for details
 
-### **skip_count**
+### skip_count
 
 Defines the amount of checks before the power mode is skipped and disks are started
 to check the disk status, polling is done every 30 min; 1460 is once a month
 
-### **email**
+### email
 
 Define who to notify, the email field can be a coma separated list without spaces.
 
@@ -50,8 +50,6 @@ Use the special sting `nomailer` to not send anyone an alert.
 more details: https://linux.die.net/man/5/smartd.conf
 
 
-
-
 {{% hint info %}}
 **NOTE:**  
 Autobott changes the default configuration of the debain installation and does **not** use
@@ -59,5 +57,36 @@ Autobott changes the default configuration of the debain installation and does *
 /etc/smartmontools/run.d/ will be ignored.
 {{% /hint %}}
 
+## nanoSmart
 
+https://github.com/ansible-autobott/nanoSmart
 
+is a small cron + a Vue.js SPA to make smart information visible over an HTTP server.
+nanosmart cron and SPA is installed and enabled by default; 
+to make the content accessible add a Vhost config like:
+
+```yaml
+
+  - name: nanosmart
+    enabled: true
+    servers:
+      - enabled: true
+        domains:
+          - "https://smart.domain.com"
+        type: "static"
+        document_root: "/opt/nanoSmart/webui"
+
+```
+
+If you wish to disable nanoSmart the config of nanoSmart.enabled to false
+
+``` yaml
+smartd:
+  nanoSmart:
+    enabled: false
+```
+
+{{% hint info %}}
+**NOTE:**  
+This will also delete all current existing reports stored in the same installation dir.
+{{% /hint %}}

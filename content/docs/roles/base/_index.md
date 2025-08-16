@@ -25,5 +25,5 @@ Installs and configures the Docker daemon and user access.
 Installs a minimal SMTP email forwarder to get email notifications.
 
 ---
-### [**Smard**](/docs/docs/roles/base/smartd)
+### [**SmartD**](/docs/docs/roles/base/smartd)
 Install smartmontools and configure smard
