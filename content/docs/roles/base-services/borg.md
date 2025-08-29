@@ -52,16 +52,11 @@ borg:
     # where the backups will be stored
     data_directory: /var/borg_backups
 
-    # Create symlink to ease the access and not expose internal storage structure
-    # Set to empty string to disable symlink creation
-    # this allows to setup your repos as borg@machine/backup/repo
-    data_symlink: /backup
-
     # list of repositories, 
     repos:
       - name: test
         public_key: "ssh-rsa AAAAB..."
-        append_only: true        
+        # check permission here: https://borgbackup.readthedocs.io/en/master/usage/serve.html
+        permissions: write-only # all | no-delete | write-only | read-only        
 ```
-
 

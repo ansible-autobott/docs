@@ -53,7 +53,7 @@ ansible_become_pass:  "{{ secrets.ans_sudo_pw }}"
 Autobott contains a convenient make utility to encrypt values 
 
 ```bash
-make encrypt KEY=ans_sudo_pw VALUE="MySecret" INV=/path/to/inventory.yaml
+make encrypt INV=/path/to/inventory.yaml KEY=ans_sudo_pw VALUE="MySecret" 
 ```
 output: 
 ```bash
@@ -66,6 +66,27 @@ ans_sudo_pw: !vault |
 ```
 
 this can then copied into your inventory
+
+
+#### Multi line content 
+
+
+If you need to encrypt multi line content like a private ssh key, you can store it's base64 encoded string
+
+```bash
+cat my_key | base64 -w 0
+```
+provide this string to the encrypt target 
+
+```bash
+make encrypt INV=/path/to/inventory.yaml KEY=key VALUE="LS0tLS1CRUBPUEVOU1N....="
+```
+
+to use the secret then you use the _b64decode_ filter
+
+```yaml
+ssh_key: "{{ secrets.privateKey_base64 | b64decode }}"
+```
 
 ### Decrypting values
 

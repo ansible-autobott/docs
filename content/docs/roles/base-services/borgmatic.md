@@ -33,11 +33,13 @@ borgmatic_backups:
         label: local
         encryption: none
         
+      # if using borg server use something like ssh://<borg-user>@<server-host>/<repo>, e.g ssh://borg@alexia.lan/main
       - path: ssh://qwerty.repo.borgbase.com/./repo
         label: remote
         encryption: repokey-blake2
 
     ## ssh private key used if the destination is ssh
+    ## make sure it has no passphrase or automatic backups wont work
     ssh_key: |
       -----BEGIN OPENSSH PRIVATE KEY-----
       b3BlbnNzaC1rZXktdjEAAAAABG5vbmUA ...    
@@ -142,6 +144,8 @@ For **Borg 2** use one of the following options
 
 {{% hint info %}}
 run `borg repo-create --help` (or `borg rcreate --help` on older build) for details,
+
+with borg2 you can run `borg benchmark cpu` to get benchmarks on your specific machine
 {{% /hint %}}
 
 
