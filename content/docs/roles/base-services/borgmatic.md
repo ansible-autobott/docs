@@ -59,6 +59,13 @@ borgmatic_backups:
     # set to "none" to disable
     schedule: "weekly" 
 ```
+
+{{% hint warning %}}
+Repository initialization will only happen once, once successfully initialized a flag will be stored as a fact on the host
+in /etc/ansible/facts.d/borgmatic_repos_init.fact
+{{% /hint %}}
+
+
 #### Retention policies
 
 These are the retention policies detailed:

@@ -55,8 +55,10 @@ borg:
     # list of repositories, 
     repos:
       - name: test
-        public_key: "ssh-rsa AAAAB..."
-        # check permission here: https://borgbackup.readthedocs.io/en/master/usage/serve.html
-        permissions: write-only # all | no-delete | write-only | read-only        
+        # allows to define multiple ssh keys with different permisions
+        ssh_keys:
+          - public_key: "ssh-rsa AAAAB..."
+            # check permission here: https://borgbackup.readthedocs.io/en/master/usage/serve.html
+            permissions: write-only # all | no-delete | write-only | read-only        
 ```
 

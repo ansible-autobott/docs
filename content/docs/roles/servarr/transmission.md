@@ -42,6 +42,26 @@ transmission:
 ```
 
 ---
+## Scheduled cleanup
+
+The transmission role contains a utility script to delete complete torrents after a certain time.
+This is useful if you want to seed an N minimum amount of days before delete the torrent.
+
+Use a configuration like below to setup N amount of cleanup targets.
+```yaml
+transmission:
+  autoclean: 
+   - name: sonarr
+     # the path on your torrent download
+     target: /media/torrent/tv-sonar
+     # how long to keep
+     days: 16
+
+
+```
+
+
+---
 ## Proxy Configuration
 
 Once enabled you can point a reverse proxy to: `127.0.0.1:9091` (if you did not change the port)

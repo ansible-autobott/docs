@@ -214,8 +214,9 @@ borg:
     enabled: true
     repos:
       - name: test
-        public_key: "ssh-ed25519 AAAA... test-remote"
-        permissions: "all"
+        ssh_keys:
+          - public_key: "ssh-ed25519 AAAA... test-remote"
+            permissions: "write-only"
 ```
 
 This will create a repository that can be accessed via ssh on `ssh://borg@my-host/test`
@@ -224,18 +225,27 @@ This will create a repository that can be accessed via ssh on `ssh://borg@my-hos
 **NOTE:** the configured ssh key will **only** be able to run borg actions, and only in the scop of the configured permissions
 {{% /hint %}}
 
-You can create multiple entries for the same repo e.g.
+You can create multiple  ssh keys with different permissions, the idea behind this is that you have
+one key without a passphrase that will run scheduled backups with cron and borgmatic and a second key
+**with** a passphrase that has full access for manual interaction, e.g. mounting and so on 
 
 ```yaml
 
 repos:
   - name: test
-    public_key: "ssh-ed25519 AAAA... key1"
-    permissions: "write-only"
-  - name: test
-    public_key: "ssh-ed25519 AAAA... key2"
-    permissions: "read-only"
+    ssh_keys:
+      - public_key: "ssh-ed25519 AAAA... test-remote"
+        permissions: "write-only"
+      - public_key: "ssh-ed25519 BBBB... test-remote"
+        permissions: "all"
 ```
+
+---
+### Initializing Borg Repos
+If you use the Borgmatic role, you will need an ssh key **without passphrase** and the **all** permissions 
+configured in Borg on the server. ( you can deploy a write only key and temporarily change the permission to all)
+
+Then you can explicitly run the borgmatic role to create the config and init the repo. 
 
 ---
 ### borgmatic 101
