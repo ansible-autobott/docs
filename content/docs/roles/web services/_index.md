@@ -51,3 +51,9 @@ Deploys Docmost, a self-hosted collaborative document editor designed for intern
 ### [**phpMyAdmin**](/docs/docs/roles/web-services/phpmyadmin)
 
 Installs phpMyAdmin, a web-based interface for managing MySQL/MariaDB databases.
+
+---
+
+### [**Dashi**](/docs/docs/roles/web-services/dashi)
+
+Deploys Dashi, a self-hosted personal landing page with a built-in visual editor, theme support, and server-side PNG rendering for e-ink displays.
