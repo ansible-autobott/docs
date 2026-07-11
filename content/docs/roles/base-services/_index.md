@@ -27,6 +27,12 @@ Sets up Samba for local file sharing over the SMB/CIFS protocol, enabling cross-
 
 ---
 
+### [**Rsyncd**](/docs/docs/roles/base-services/rsyncd)
+
+Runs an rsync daemon exposing modules (shares) over the native rsync protocol, with optional authentication.
+
+---
+
 ### [**MariaDB**](/docs/docs/roles/base-services/mariadb)
 
 Installs and configures the MariaDB database server, a drop-in replacement for MySQL.

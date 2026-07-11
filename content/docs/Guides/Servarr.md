@@ -153,6 +153,36 @@ shares:
 ```
 
 
+### Rsyncd share
+
+If you also want to expose the shared tree over the rsync protocol (for example
+to pull backups or sync from another host), the rsyncd daemon has to write files
+with the same group and modes as the rest of the services.
+
+Use `incoming_chmod` (rsync's `--chmod` syntax) to force the modes on received
+files, and match the module directory ownership/mode to the samba share:
+
+```yaml
+rsyncd:
+  modules:
+    - name: "media"
+      path: "/media/shared_movies"
+      read_only: false
+      auth_users: ["backup"]
+      # force modes on received files: dirs 2770 (setgid), files 0660
+      incoming_chmod: "D2770,F0660"
+      # module root: match the samba share
+      dir_mode: "2770"
+      dir_group: "smbmedia"
+```
+
+{{% hint warning %}}
+As with the samba share, make sure the rsyncd module points at the same
+owner/group and mode; otherwise the roles will conflict and reassign different
+permissions on the same folder.
+{{% /hint %}}
+
+
 ### Torrent downloaded files
 
 
