@@ -48,6 +48,12 @@ Deploys Docmost, a self-hosted collaborative document editor designed for intern
 
 ---
 
+### [**Aether**](/docs/docs/roles/web-services/aether)
+
+Deploys Aether, a music server exposing an OpenSubsonic API and its own web player.
+
+---
+
 ### [**phpMyAdmin**](/docs/docs/roles/web-services/phpmyadmin)
 
 Installs phpMyAdmin, a web-based interface for managing MySQL/MariaDB databases.
