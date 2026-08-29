@@ -15,6 +15,27 @@ prepare: ## Prepare the Hugo environment
 serve: ## serve the hugo page locally
 	@hugo server
 
+##@ Release
+# accept either `make tag VERSION=v1.2.3` (used by the git-flows release prompt)
+# or the aether-style lowercase `make tag version=v1.2.3`
+VERSION ?= $(version)
+
+.PHONY: check-branch
+check-branch:
+	@[ "$$(git symbolic-ref --short HEAD)" = "main" ] || ( echo "Error: must be on 'main' to tag a release"; exit 1 )
+
+.PHONY: check-git-clean
+check-git-clean:
+	@git diff --quiet && git diff --cached --quiet || ( echo "Error: git repo has uncommitted changes"; exit 1 )
+
+.PHONY: tag
+tag: check-git-clean check-branch ## tag the current commit (VERSION=v1.2.3) and push it to publish a release
+	@[ "$(VERSION)" ] || ( echo ">> VERSION is not set, usage: make tag VERSION=\"v1.2.3\""; exit 1 )
+	@git tag -d $(VERSION) || true
+	@git tag -a $(VERSION) -m "Release version: $(VERSION)"
+	@git push --delete origin $(VERSION) || true
+	@git push origin $(VERSION)
+
 ##@ Help
 .PHONY: help
 help: ## Display this help.

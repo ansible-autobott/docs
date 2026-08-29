@@ -2,10 +2,11 @@
 name: Deploy Hugo site to Pages
 
 on:
-  # Runs on pushes targeting the default branch
+  # Publish on release tags only — pushing to main no longer deploys, so the
+  # published site tracks the latest semver tag and git can be ahead of it.
   push:
-    branches:
-      - main
+    tags:
+      - 'v*.*.*'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -51,8 +52,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          submodules: recursive
           fetch-depth: 0
+      - name: Check out the latest semver tag
+        run: |
+          latest="$(git tag -l 'v*.*.*' --sort=-v:refname | head -n1)"
+          if [ -z "$latest" ]; then
+            echo "::error::no semver (v*.*.*) tag found to publish"
+            exit 1
+          fi
+          echo "Publishing docs from tag $latest"
+          git checkout --force --detach "$latest"
+          git submodule update --init --recursive
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
