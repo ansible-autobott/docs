@@ -45,7 +45,6 @@ authelia:
         - "demo.localhost.lan"
         - "jellyfin.localhost.lan"
         - "wiki.localhost.lan"
-      auth_url: "https://auth.localhost.lan"
       policy: "two_factor" # one_factor | two_factor
       groups:
         - team1
@@ -102,3 +101,52 @@ authelia:
   totp_issuer: "Authelia"
 
 ```
+
+---
+## Protecting a vhost
+
+Configuring a site above only defines the access policy. To actually enforce it, the vhost
+serving that domain has to forward its requests to Authelia. The types `static`, `spa`,
+`php` and `proxy` support this with `authelia: true`:
+
+```yaml
+- name: myserver
+  enabled: true
+  servers:
+    - enabled: true
+      domains:
+        - "https://demo.localhost.lan"
+      type: "proxy"
+      proxy_url: "http://127.0.0.1:8080"
+      authelia: true
+      authelia_port: 9031 # optional, only if authelia does not run on the default port
+```
+
+The upstream service receives the authenticated identity in the `Remote-User`,
+`Remote-Groups`, `Remote-Email` and `Remote-Name` headers.
+
+### Excluding paths
+
+Some services expose an API that authenticates itself with tokens or api keys. Sending
+those requests through Authelia breaks them, because the client receives an HTML login
+page it cannot handle. Use `authelia_except_paths` to let them through, everything not
+listed stays protected:
+
+```yaml
+    - enabled: true
+      domains:
+        - "https://aether.localhost.lan"
+      type: "proxy"
+      proxy_url: "http://127.0.0.1:8075"
+      authelia: true
+      authelia_except_paths:
+        - "/rest"
+        - "/rest/*"
+```
+
+{{% hint warning %}}
+**NOTE:**
+Caddy matches paths exactly, so to exclude a whole subtree you need both the path itself
+and the wildcard (`/rest` **and** `/rest/*`). Note that `/rest` does not match
+`/restricted`, so unrelated paths stay protected.
+{{% /hint %}}
