@@ -15,7 +15,7 @@ Note: due to the nature of tailscale it's state cannot be provisioned with Ansib
 
 ## Enable the role
 ``` yaml
-run_role_linux_apt: true
+run_role_tailscale: true
 
 ```
 
