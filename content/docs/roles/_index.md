@@ -47,3 +47,8 @@ Enables the setup and management of personal media services, including tools for
 content like movies, shows, music, and books.
 
 ---
+
+### [**Desktop**](/docs/docs/roles/desktop)
+Sets up a Debian / Ubuntu desktop: the KDE Plasma desktop, its theme and opinionated customizations.
+
+---
